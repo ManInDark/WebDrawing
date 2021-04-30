@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>Post Pixel</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        textarea {
+            resize: none;
+            vertical-align: middle;
+        }
+
+        .centered {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        pre {
+            margin: 2px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="centered">
+        <div>
+            <pre>x: <textarea id="x" rows="1" cols="5"></textarea></pre>
+            <pre>y: <textarea id="y" rows="1" cols="5"></textarea></pre>
+            <pre>r: <textarea id="r" rows="1" cols="5"></textarea></pre>
+            <pre>g: <textarea id="g" rows="1" cols="5"></textarea></pre>
+            <div style="display: flex;">
+                <pre>b: <textarea id="b" rows="1" cols="5"></textarea></pre>
+                <button onclick="send()">Send</button>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+    function send() {
+        var request = new XMLHttpRequest()
+        request.open("POST", window.location.href, true)
+        request.setRequestHeader("Content-Type", "application/json")
+        request.onreadystatechange = async function () {
+            console.log(`Success: ${request.status}`)
+            if (this.responseText.length > 0)
+                console.log(`Response: ${this.responseText}`)
+        }
+        request.send(JSON.stringify({
+            "x": getValue("x"),
+            "y": getValue("y"),
+            "r": getValue("r"),
+            "g": getValue("g"),
+            "b": getValue("b")
+        }))
+    }
+    function getValue(name) {
+        return document.getElementById(name).value
+    }
+</script>
+
+</html>

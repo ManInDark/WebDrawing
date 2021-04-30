@@ -1,0 +1,13 @@
+version: "3"
+# docker run --rm --name WebImage -p 82:8080 webimage
+
+services:
+  webimage:
+    container_name: WebImage
+    image: webimage:latest
+    ports:
+      - 82:8080
+    cap_add:
+      - NET_ADMIN
+      - Net_BIND_SERVICE
+    restart: unless-stopped
