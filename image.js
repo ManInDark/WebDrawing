@@ -14,17 +14,11 @@ class ImageDrawing {
     getCanvas() { return this.canvas }
     getBuffer() { return this.canvas.toBuffer("image/png") }
 
-    fillRect(x, y, width, height) {
-        this.context.fillRect(x, y, width, height)
-    }
+    fillRect(x, y, width, height) { this.context.fillRect(x, y, width, height) }
     fillEmpty() { this.fillRect(0, 0, this.getWidth(), this.getHeight()) }
     fillPoint(x, y) { this.fillRect(x, y, 1, 1) }
-    setHexFillStyle(fillStyle) {
-        if (this.context.fillStyle != fillStyle) { this.context.fillStyle = fillStyle }
-    }
-    setRGBFillStyle(r, g, b) {
-        this.context.fillStyle = "rgb(" + r + ", " + g + ", " + b + ")"
-    }
+    setHexFillStyle(fillStyle) { if (this.context.fillStyle != fillStyle) { this.context.fillStyle = fillStyle } }
+    setRGBFillStyle(r, g, b) { this.context.fillStyle = "rgb(" + r + ", " + g + ", " + b + ")" }
     saveImage(name) { fs.writeFileSync("./" + String(name) + ".png", this.getBuffer()) }
 }
 

@@ -11,7 +11,8 @@ RUN npm install
 COPY ./main.js ./main.js
 COPY ./image.js ./image.js
 COPY ./post-site.html ./post-site.html
+COPY ./combined-site.html ./combined-site.html
 
 EXPOSE 8080
 
-CMD ["node", "main.js", "64", "64"]
+CMD ["node", "main.js"]

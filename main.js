@@ -1,19 +1,25 @@
 "use strict"
 const { ImageDrawing } = require("./image");
 const http = require("http")
-const fs = require("fs")
+const fs = require("fs");
+
 const args = process.argv
 const DEFAULT_CROSS = false
-
 const posthtml = fs.readFileSync("post-site.html")
-if (args.length <= 4)
+const togetherhtml = fs.readFileSync("combined-site.html")
+
+if ((process.env.WIDTH || false) && (process.env.HEIGHT || false)) {
+    args.push(process.env.WIDTH)
+    args.push(process.env.HEIGHT)
+}
+if (args.length < 4)
     for (var i = 0; i < 2; i++)
         args.push(64)
+
 const image = new ImageDrawing(args[2] * 1, args[3] * 1)
 image.setRGBFillStyle(255, 255, 255)
 image.fillEmpty()
 image.setRGBFillStyle(100, 100, 100)
-
 if (DEFAULT_CROSS) {
     for (var n = 0; n < image.getWidth(); n++) {
         image.fillPoint(n, n)
@@ -23,12 +29,15 @@ if (DEFAULT_CROSS) {
 
 http.createServer(async function (request, response) {
     if (request.method === "GET") {
-        if (request.url === "/") {
+        if (request.url === "/image") {
             response.writeHead(200, { 'Content-Type': 'image/png' })
             response.end(image.getBuffer())
         } else if (request.url === "/post") {
             response.writeHead(200, { 'Content-Type': 'text/html' })
             response.end(posthtml)
+        } else if (request.url === "/") {
+            response.writeHead(200, { 'Content-Type': 'text/html' })
+            response.end(togetherhtml)
         }
 
 

@@ -10,17 +10,51 @@
         textarea {
             resize: none;
             vertical-align: middle;
+            padding: 0px;
         }
 
         .centered {
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
         }
 
-        pre {
-            margin: 2px;
-            margin-right: 10px;
+        b {
+            margin: 0px;
+            margin-right: 4px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .black-boarder {
+            color: black;
+            border-width: 2px;
+            border-radius: 4px;
+            border-color: black;
+        }
+
+        button {
+            height: 19.6px;
+            width: 55px;
+            display: block;
+            font-size: 12px;
+            margin-top: 1px;
+            background-color: lightgray;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        button:focus {
+            background-color: rgb(151, 140, 140);
+        }
+
+        button:active {
+            background-color: rgb(58, 55, 55);
+        }
+
+        td,
+        tr,
+        table {
+            padding: 0px;
+            border-spacing: 0px;
         }
     </style>
 </head>
@@ -28,14 +62,44 @@
 <body>
     <div class="centered">
         <div>
-            <pre>x: <textarea id="x" rows="1" cols="5"></textarea></pre>
-            <pre>y: <textarea id="y" rows="1" cols="5"></textarea></pre>
-            <pre>r: <textarea id="r" rows="1" cols="5"></textarea></pre>
-            <pre>g: <textarea id="g" rows="1" cols="5"></textarea></pre>
-            <div style="display: flex;">
-                <pre>b: <textarea id="b" rows="1" cols="5"></textarea></pre>
-                <button onclick="send()">Send</button>
-            </div>
+            <table>
+                <tr>
+                    <td>
+                        <b>x: </b>
+                    </td>
+                    <td><textarea class="black-boarder" id="x" rows="1" cols="5" maxlength="6"></textarea></td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>y: </b>
+                    </td>
+                    <td><textarea class="black-boarder" id="y" rows="1" cols="5" maxlength="6"></textarea></td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>r: </b>
+                    </td>
+                    <td><textarea class="black-boarder" id="r" rows="1" cols="5" maxlength="6"></textarea></td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>g: </b>
+                    </td>
+                    <td><textarea class="black-boarder" id="g" rows="1" cols="5" maxlength="6"></textarea></td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>b: </b>
+                    </td>
+                    <td><textarea class="black-boarder" id="b" rows="1" cols="5" maxlength="6"></textarea></td>
+                </tr>
+            </table>
+        </div>
+        <div style="display: block; align-self: flex-end; margin-left: 4px;">
+            <button class="black-boarder"
+                onclick="document.location.reload(true); parent.location.reload(true)">Reload</button>
+            <button class="black-boarder" onclick="clean()">Clear</button>
+            <button class="black-boarder" onclick="send()">Send</button>
         </div>
     </div>
 </body>
@@ -46,7 +110,7 @@
         request.open("POST", window.location.href, true)
         request.setRequestHeader("Content-Type", "application/json")
         request.onreadystatechange = async function () {
-            console.log(`Success: ${request.status}`)
+            console.log(`Response Code: ${request.status}`)
             if (this.responseText.length > 0)
                 console.log(`Response: ${this.responseText}`)
         }
@@ -57,6 +121,9 @@
             "g": getValue("g"),
             "b": getValue("b")
         }))
+    }
+    function clean() {
+        for (e in arr = ["x", "y", "r", "g", "b"]) { document.getElementById(arr[e]).value = "" }
     }
     function getValue(name) {
         return document.getElementById(name).value
